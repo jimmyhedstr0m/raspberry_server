@@ -1,13 +1,12 @@
 import subprocess
 from config_parser import ConfigParser
+from remote_interface import Remote
 
 
-class TvRemote:
+class IrRemote(Remote):
 
     def __init__(self, remote_id):
-        self.remote_id = remote_id
-        self.config = ConfigParser()
-        self.remote_commands = self.config.get_remote_commands()
+        super(IrRemote, self).__init(remote_id)
 
     def execute_command(self, command_id):
         if self.validate_command(command_id):
@@ -19,5 +18,3 @@ class TvRemote:
         cmd = 'irsend SEND_ONCE ' + string(conf_file) + ' ' + string(command_id)
         subprocess.call(cmd, shell=True)
 
-    def validate_command(self, command_id):
-        return command_id in self.remote_commands
