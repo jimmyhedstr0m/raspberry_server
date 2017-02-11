@@ -7,6 +7,7 @@ Remember to add an 22 ohm resistor before the leds so they don't burn
 Connect sender to GPIO22, receiver to GPIO23
 
 Learn lirc remotes: http://www.ocinside.de/html/modding/linux_ir_irrecord_guide.html
+Lirc key codes: http://www.ocinside.de/modding_en/linux_ir_irrecord_list/
 
 Wiring pilight: https://manual.pilight.org/en/electronics-wiring
 Connect sender GPIO17, receiver to GPIO18
