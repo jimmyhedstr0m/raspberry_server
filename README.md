@@ -10,3 +10,7 @@ Learn lirc remotes: http://www.ocinside.de/html/modding/linux_ir_irrecord_guide.
 
 Wiring pilight: https://manual.pilight.org/en/electronics-wiring
 Connect sender GPIO17, receiver to GPIO18
+
+Pilight Ssdp Error: https://manual.pilight.org/en/faq#pf2
+
+GPIO chart for raspberry pi 3: https://s-media-cache-ak0.pinimg.com/originals/84/46/ec/8446eca5728ebbfa85882e8e16af8507.png
