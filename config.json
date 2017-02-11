@@ -21,26 +21,77 @@
             "name": "LG",
             "config_file": "/etc/lirc/lg.conf",
             "keys": [
-                {
-                    "id": "KEY_ALTERASE",
-                    "friendly_name": "Alternative key"
-                },
-                {
-                    "id": "KEY_AUX",
-                    "friendly_name": "Input source"
-                },
-                {
-                    "id": "KEY_BLUE",
-                    "friendly_name": "Blue key"
-                },
-                {
-                    "id": "KEY_RED",
-                    "friendly_name": "Red key"
-                },
-                {
-                    "id": "KEY_RED",
-                    "friendly_name": "Red key"
-                }
+                "KEY_ALTERASE",
+                "KEY_AUX",
+                "KEY_BLUE",
+                "KEY_CHANNELDOWN",
+                "KEY_CHANNELUP",
+                "KEY_DOWN",
+                "KEY_EXIT",
+                "KEY_FAVORITES",
+                "KEY_FRAMEBACK",
+                "KEY_FRAMEFORWARD",
+                "KEY_GREEN",
+                "KEY_HELP",
+                "KEY_HOME",
+                "KEY_INFO",
+                "KEY_LEFT",
+                "KEY_LIST",
+                "KEY_NUMERIC_0",
+                "KEY_NUMERIC_1",
+                "KEY_NUMERIC_2",
+                "KEY_NUMERIC_3",
+                "KEY_NUMERIC_4",
+                "KEY_NUMERIC_5",
+                "KEY_NUMERIC_6",
+                "KEY_NUMERIC_7",
+                "KEY_NUMERIC_8",
+                "KEY_NUMERIC_9",
+                "KEY_NUMERIC_STAR",
+                "KEY_OK",
+                "KEY_OPTION",
+                "KEY_PAUSE",
+                "KEY_PLAY",
+                "KEY_POWER",
+                "KEY_Q",
+                "KEY_QUESTION",
+                "KEY_RECORD",
+                "KEY_RED",
+                "KEY_RIGHT",
+                "KEY_SCREEN",
+                "KEY_SETUP",
+                "KEY_STOP",
+                "KEY_SUBTITLE",
+                "KEY_TAB",
+                "KEY_TEXT",
+                "KEY_UP",
+                "KEY_YELLOW",
+                "BTN_BACK",
+                "BTN_GEAR_DOWN",
+                "BTN_GEAR_UP",
+                "BTN_TRIGGER"
+            ]
+        },
+        {
+            "name": "Bose",
+            "config_file": "/etc/lirc/bose.conf",
+            "keys": [
+                "KEY_AUDIO",
+                "KEY_VOLUMEUP",
+                "KEY_VOLUMEDOWN",
+                "KEY_MUTE"
+            ]
+        },
+        {
+            "name": "Apple TV",
+            "config_file": "/etc/lirc/my_apple_tv.conf",
+            "keys": [
+                "KEY_UP",
+                "KEY_DOWN",
+                "KEY_LEFT",
+                "KEY_RIGHT",
+                "KEY_OK",
+                "BTN_BACK"
             ]
         }
     ]
