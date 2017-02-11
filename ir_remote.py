@@ -15,6 +15,5 @@ class IrRemote(Remote):
             print "Unknown commands, remote received following signal", arg
 
     def _execute_command(command_id):
-        cmd = 'irsend SEND_ONCE ' + string(conf_file) + ' ' + string(command_id)
+        cmd = "irsend SEND_ONCE " + string(conf_file) + " " + string(command_id)
         subprocess.call(cmd, shell=True)
-

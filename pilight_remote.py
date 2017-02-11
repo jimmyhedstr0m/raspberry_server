@@ -14,5 +14,6 @@ class PiLightRemote
             print "Unknown commands, remote received following signal", arg
 
     def _execute_command(command_id):
-        cmd = 'pilight-send -p nexa_switch -i ' + string(self.remote_id) + ' -u ' + string(command_id)
+        cmd = "pilight-send -p nexa_switch -i " + \
+            string(self.remote_id) + " -u " + string(command_id)
         subprocess.call(cmd, shell=True)
