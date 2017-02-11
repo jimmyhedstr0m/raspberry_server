@@ -1,7 +1,9 @@
 from flask import Flask, request
+from config_parser import ConfigParser
 import json
 
 app = Flask(__name__)
+config_parser = ConfigParser()
 
 
 def init():
