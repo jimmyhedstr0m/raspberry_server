@@ -5,9 +5,13 @@ app = Flask(__name__)
 def hello():
     return "Hello world!"
 
-@app.route("/<name>")
-def name(name):
-    return "Hello " + str(name)
+@app.route("/status")
+def status():
+    return "Working fine..."
+
+@app.route("/lamps/toggle/<int:group>/<int:lamp>", methods=["POST"])
+def toggle(group, lamp):
+    return "Toggle group " + str(group) + " and lamp " + str(lamp)
 
 if __name__ == "__main__":
     app.run()
