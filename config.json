@@ -15,5 +15,33 @@
                 }
             ]
         }
+    ],
+    "remotes": [
+        {
+            "name": "LG",
+            "config_file": "/etc/lirc/lg.conf",
+            "keys": [
+                {
+                    "id": "KEY_ALTERASE",
+                    "friendly_name": "Alternative key"
+                },
+                {
+                    "id": "KEY_AUX",
+                    "friendly_name": "Input source"
+                },
+                {
+                    "id": "KEY_BLUE",
+                    "friendly_name": "Blue key"
+                },
+                {
+                    "id": "KEY_RED",
+                    "friendly_name": "Red key"
+                },
+                {
+                    "id": "KEY_RED",
+                    "friendly_name": "Red key"
+                }
+            ]
+        }
     ]
 }
