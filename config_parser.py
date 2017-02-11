@@ -1,9 +1,10 @@
 import json
 
 
-class ConfigParser
+class ConfigParser():
 
     def __init__(self):
+        self.load_config_file()
 
     def load_config_file(self):
         with open("config.json") as data_file:
@@ -13,3 +14,4 @@ class ConfigParser
         return self.config_data["switch_groups"]
 
     def get_remote_commands(self, remote_id):
+        pass
