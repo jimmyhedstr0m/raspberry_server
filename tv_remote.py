@@ -1,8 +1,11 @@
 import subprocess
+from config_parser import ConfigParser
 
-class TV_Remote:
-    def __init__(self):
-        # Create instance of config parser and load relevant config data for remote
+class TvRemote:
+    def __init__(self, remote_id):
+        self.remote_id = remote_id
+        self.config = ConfigParser()
+        self.remote_commands = self.config.get_remote_commands()
     def execute_command(self, command_id):
         if self.validate_command(command_id):
             self._execute_command(command_id)
@@ -14,8 +17,6 @@ class TV_Remote:
         subprocess.call(cmd, shell=True)
 
     def validate_command(self, command_id):
-        return True # Read config.json and validate 
+        return command_id in self.remote_commands
     
-    def get_config_data(self):
-        return True;
         
