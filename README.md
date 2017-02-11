@@ -54,3 +54,6 @@ pilight-send -p nexa_switch -i <uuid> -a -t
 
 Turn all off:
 pilight-send -p nexa_switch -i <uuid> -a -f
+
+# Flask
+Documentation: http://flask.pocoo.org/docs/0.12/
