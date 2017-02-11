@@ -1,0 +1,19 @@
+{
+    "lamp_groups": [
+        {
+            "id": 0,
+            "name": "Grupp 1",
+            "remote_code": "20617870",
+            "lamps": [
+                {
+                    "id": 0,
+                    "name": "Fönster"
+                },
+                {
+                    "id": 1,
+                    "name": "Skrivbord"
+                }
+            ]
+        }
+    ]
+}
