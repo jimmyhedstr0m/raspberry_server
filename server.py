@@ -1,13 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 import json
 
 app = Flask(__name__)
-
-
-def init():
-    with open("config.json") as json_data:
-        d = json.load(json_data)
-        print json.dumps(d)
 
 
 @app.route("/")
@@ -20,9 +14,16 @@ def status():
     return "Working fine..."
 
 
-@app.route("/lamps/toggle/<int:group>/<int:lamp>", methods=["POST"])
-def toggle(group, lamp):
-    return "Toggle group " + str(group) + " and lamp " + str(lamp)
+@app.route("/switches/toggle/<int:group>/<unit>", methods=["POST"])
+def toggle(group, unit):
+    if unit == "all":
+        return "Toggle all units in group " + str(group)
+    else:
+        try:
+            unit = int(unit)
+            return "Toggle group " + str(group) + " and unit " + str(unit)
+        except ValueError:
+            abort(400)
 
 
 @app.route("/remote", methods=["POST"])
@@ -30,5 +31,4 @@ def remote():
     return json.dumps(request.json)
 
 if __name__ == "__main__":
-    init()
     app.run(host="0.0.0.0", port=5000, debug=True)

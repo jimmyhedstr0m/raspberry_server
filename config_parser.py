@@ -9,6 +9,7 @@ class ConfigParser
         with open("config.json") as data_file:
             self.config_data = json.load(data_file)
 
-    def get_lamp_groups(self):
+    def get_switch_groups(self):
+        return self.config_data["switch_groups"]
 
     def get_remote_commands(self, remote_id):
