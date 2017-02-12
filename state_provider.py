@@ -1,5 +1,7 @@
 import json
 import os.path
+import io
+from config_parser import ConfigParser
 
 
 class StateProvider():
@@ -9,18 +11,25 @@ class StateProvider():
 
     def load_states(self):
         if os.path.isfile("states.json"):
-            print "file exists"
+            with io.open("states.json", "r", encoding="utf8") as data_file:
+                self.states_data = json.load(data_file)
         else:
-            print "no file"
-            file = open("states.json","w")
-            file.write("")
-            file.close()
+            with io.open("config.json", "r", encoding="utf8") as data_file:
+                data = json.load(data_file)
+                switch_groups = data["switch_groups"]
 
-        # with open("config.json") as data_file:
-        #     self.config_data = json.load(data_file)
+                for switch_group in switch_groups:
+                    for unit in switch_group["units"]:
+                        unit["on"] = False
+                        unit["last_event"] = ""
+                        unit["last_user"] = ""
 
-    # def reload_config_file(self):
-    #     self.load_config_file()
-    #
-    # def get_switch_groups(self):
-    #     return self.config_data["switch_groups"]
+                data_str = json.dumps(switch_groups, indent=2)
+
+                try:
+                    to_unicode = unicode
+                except NameError:
+                    to_unicode = str
+
+                with io.open("states.json", "w", encoding="utf8") as source_file:
+                    source_file.write(to_unicode(data_str))

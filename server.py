@@ -9,8 +9,8 @@ import json
 app = Flask(__name__)
 config_parser = ConfigParser()
 
-@crossdomain_fix.crossdomain(origin='*')
 
+@crossdomain_fix.crossdomain(origin='*')
 @app.route("/")
 def hello():
     return "Hello world!"
@@ -28,7 +28,6 @@ def toggle(group, unit):
         switch_group = config_parser.get_switch_groups()[group]
 
         # for units in switch_group["units"]:
-
 
         return "Toggle all units in group " + str(group)
     else:
