@@ -24,22 +24,46 @@ def status():
     return "Working fine..."
 
 
-@app.route("/switches/toggle/<int:group>/<int:unit>", methods=["POST", "OPTIONS"])
-def toggle(group, unit):
-    toggle = pilight_remote.toggle_unit(group, unit)
+# Toggle specific group unit
+@app.route("/switches/toggle/group/<int:group_id>/unit/<int:unit_id>", methods=["POST", "OPTIONS"])
+def toggle(group_id, unit_id):
+    toggle = pilight_remote.toggle_unit(group_id, unit_id)
     return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
-@app.route("/switches/<int:group>/<int:mode>", methods=["POST", "OPTIONS"])
-def toggle_group_units(group, mode):
-    toggle = pilight_remote.toggle_group_units(group, bool(mode))
+# Set units in specific group/all groups to either on/off (1/0)
+@app.route("/switches/group/<group_id>/power/<int:mode>", methods=["POST", "OPTIONS"])
+def toggle_group_units(group_id, mode):
+    if group_id == "all":
+        toggle = pilight_remote.toggle_all_units(bool(mode))
+    else:
+        try:
+            toggle = pilight_remote.toggle_group_units(int(group_id), bool(mode))
+        except ValueError:
+            abort(400)
+
     return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
-@app.route("/switches/all/<int:mode>", methods=["POST", "OPTIONS"])
-def toggle_all_units(mode):
-    toggle = pilight_remote.toggle_all_units(bool(mode))
-    return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
+# Get specific group or all groups
+@app.route("/switches/group/<group_id>")
+def get_group(group_id):
+    if group_id == "all":
+        results = StateProvider().get_all_groups()
+    else:
+        try:
+            results = StateProvider().get_group(int(group_id))
+        except ValueError:
+            abort(400)
+
+    return json.dumps({"results": results}, indent=2, sort_keys=True, ensure_ascii=False)
+
+
+# Get specific group unit
+@app.route("/switches/group/<int:group_id>/unit/<int:unit_id>")
+def get_unit(group_id, unit_id):
+    unit = StateProvider().get_unit(group_id, unit_id)
+    return json.dumps({"results": unit}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 @app.route("/remote", methods=["POST", "OPTIONS"])
@@ -55,15 +79,14 @@ def remote():
 
 @app.route("/temp")
 def temp():
-    temp = subprocess.check_output(["vcgencmd","measure_temp"]).decode("UTF-8")
-    temp = float(findall("\d+\.\d+",temp)[0])
-
+    temp = subprocess.check_output(["vcgencmd", "measure_temp"]).decode("UTF-8")
+    temp = float(findall("\d+\.\d+", temp)[0])
     return json.dumps({"server_temperature": temp}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
-    subprocess.call("sudo service pilight start", shell=True)
-    subprocess.call("sudo service pilight restart", shell=True) # fix?
+    #subprocess.call("sudo service pilight start", shell=True)
+    # subprocess.call("sudo service pilight restart", shell=True) # fix?
 
     app.run(host="0.0.0.0", port=server_port, debug=True)

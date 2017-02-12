@@ -3,19 +3,25 @@ import os.path
 import io
 from config_parser import ConfigParser
 from datetime import datetime
+from threading import Lock
 
 
 class StateProvider():
 
     def __init__(self):
+        self.mutex = Lock()
         self.load_states()
 
     def load_states(self):
-        if os.path.isfile("states.json"):
-            with io.open("states.json", "r", encoding="utf8") as data_file:
-                self.states = json.load(data_file)
-        else:
-            self.reset_states()
+        self.mutex.acquire()
+        try:
+            if os.path.isfile("states.json"):
+                with io.open("states.json", "r", encoding="utf8") as data_file:
+                    self.states = json.load(data_file)
+            else:
+                self.reset_states()
+        finally:
+            self.mutex.release()
 
     def _save_states(self):
         try:
@@ -23,9 +29,13 @@ class StateProvider():
         except NameError:
             to_unicode = str
 
-        data_str = json.dumps(self.states, indent=2)
-        with io.open("states.json", "w", encoding="utf8") as destination_file:
-            destination_file.write(to_unicode(data_str))
+        self.mutex.acquire()
+        try:
+            data_str = json.dumps(self.states, indent=2)
+            with io.open("states.json", "w", encoding="utf8") as destination_file:
+                destination_file.write(to_unicode(data_str))
+        finally:
+            self.mutex.release()
 
     def reset_states(self):
         with io.open("config.json", "r", encoding="utf8") as data_file:
