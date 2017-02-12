@@ -12,24 +12,31 @@ class StateProvider():
     def load_states(self):
         if os.path.isfile("states.json"):
             with io.open("states.json", "r", encoding="utf8") as data_file:
-                self.states_data = json.load(data_file)
+                self.states = json.load(data_file)
         else:
-            with io.open("config.json", "r", encoding="utf8") as data_file:
-                data = json.load(data_file)
-                switch_groups = data["switch_groups"]
+            self.reset_states()
 
-                for switch_group in switch_groups:
-                    for unit in switch_group["units"]:
-                        unit["on"] = False
-                        unit["last_event"] = ""
-                        unit["last_user"] = ""
+    def reset_states(self):
+        with io.open("config.json", "r", encoding="utf8") as data_file:
+            data = json.load(data_file)
+            switch_groups = data["switch_groups"]
 
-                data_str = json.dumps(switch_groups, indent=2)
+            for switch_group in switch_groups:
+                for unit in switch_group["units"]:
+                    unit["on"] = False
+                    unit["last_event"] = ""
+                    unit["last_user"] = ""
 
-                try:
-                    to_unicode = unicode
-                except NameError:
-                    to_unicode = str
+            self.states = switch_groups;
+            data_str = json.dumps(switch_groups, indent=2)
 
-                with io.open("states.json", "w", encoding="utf8") as source_file:
-                    source_file.write(to_unicode(data_str))
+            try:
+                to_unicode = unicode
+            except NameError:
+                to_unicode = str
+
+            with io.open("states.json", "w", encoding="utf8") as source_file:
+                source_file.write(to_unicode(data_str))
+
+    def get_unit_state(self, group_id, unit_id):
+        return self.states[group_id]["units"][unit_id]
