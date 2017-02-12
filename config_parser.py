@@ -15,3 +15,6 @@ class ConfigParser():
 
     def get_remote_commands(self, remote_id):
         pass
+
+    def get_server_port(self):
+	return int(self.config_data["server_port"])

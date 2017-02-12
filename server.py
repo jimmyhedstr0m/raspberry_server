@@ -34,4 +34,5 @@ def remote():
     return json.dumps(request.json)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    server_port = config_parser.get_server_port()
+    app.run(host="0.0.0.0", port=server_port, debug=True)
