@@ -13,6 +13,10 @@
                 },
                 {
                     "unit_id": 1,
+                    "name": "Extra"
+                },
+                {
+                    "unit_id": 2,
                     "name": "Skrivbord"
                 }
             ]

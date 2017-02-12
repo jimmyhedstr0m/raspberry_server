@@ -5,6 +5,7 @@ from pilight_remote import PiLightRemote
 from state_provider import StateProvider
 import crossdomain_fix
 import json
+import subprocess
 
 app = Flask(__name__)
 config_parser = ConfigParser()
@@ -51,6 +52,17 @@ def remote():
     return(command)
 
 
+@app.route("/temp")
+def temp():
+    temp = subprocess.check_output(["vcgencmd","measure_temp"]).decode("UTF-8")
+    temp = float(findall("\d+\.\d+",temp)[0])
+
+    return json.dumps({"server_temperature": temp}, indent=2, sort_keys=True, ensure_ascii=False)
+
+
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
+    subprocess.call("sudo service pilight start", shell=True)
+    subprocess.call("sudo service pilight restart", shell=True) # fix?
+
     app.run(host="0.0.0.0", port=server_port, debug=True)
