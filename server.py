@@ -1,9 +1,12 @@
-from flask import Flask, request, abort
+from flask import Flask, make_response, request, abort
 from config_parser import ConfigParser
+from ir_remote import IrRemote
+import crossdomain_fix
 import json
 
 app = Flask(__name__)
 config_parser = ConfigParser()
+ir_remote = IrRemote(0)
 
 
 @app.route("/")
@@ -29,10 +32,15 @@ def toggle(group, unit):
             abort(400)
 
 
-@app.route("/remote", methods=["POST"])
+@app.route("/remote", methods=["POST", "OPTIONS"])
+@crossdomain_fix.crossdomain(origin='*')
 def remote():
-    return json.dumps(request.json)
+    print json.dumps(request.json, indent=2, sort_keys=True)
+    command = request.json["command_id"]
+    ir_remote.execute_command(command) 
+    return(command)
 
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
     app.run(host="0.0.0.0", port=server_port, debug=True)
+

@@ -8,8 +8,8 @@ class Remote():
         self.config = ConfigParser()
         self.remote_commands = self.config.get_remote_commands(remote_id)
 
-    def execute_command(self, command_id)
+    def execute_command(self, command_id):
         raise NotImplementedError("This is only an interface")
 
-    def validate_command(self, command_id)
-        return command_id in self_remote_commands
+    def validate_command(self, command_id):
+        return command_id in self.remote_commands
