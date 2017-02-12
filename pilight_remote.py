@@ -11,7 +11,7 @@ class PiLightRemote():
         switch_group = self.state_provider.get_group(group_id)
         remote_code = switch_group["remote_code"]
         cmd = "pilight-send -p nexa_switch -i " + remote_code + " -u " + str(unit_id) + " -"
-        
+
         self.state_provider.toggle_unit(group_id, unit_id)
         unit = self.state_provider.get_unit(group_id, unit_id)
 
@@ -20,22 +20,29 @@ class PiLightRemote():
         else:
             cmd += "f"
 
-        print "Execute: " + cmd
-        # subprocess.call(cmd, shell=True)
+        subprocess.call(cmd, shell=True)
         return unit
 
     def toggle_group_units(self, group_id, mode):
         switch_group = self.state_provider.get_group(group_id)
         remote_code = switch_group["remote_code"]
         cmd = "pilight-send -p nexa_switch -i " + remote_code + " -a -"
+
         if mode:
             cmd += "t"
         else:
             cmd += "f"
 
         self.state_provider.toggle_group_units(group_id, mode)
-
-        print "Execute: " + cmd
-        # subprocess.call(cmd, shell=True)
-
+        subprocess.call(cmd, shell=True)
         return self.state_provider.get_group(group_id)
+
+    def toggle_all_units(self, mode):
+        switch_groups = self.state_provider.get_all_groups()
+        groups = []
+
+        for switch_group in switch_groups:
+            toggle = self.toggle_group_units(switch_group["group_id"], mode)
+            groups.append(toggle)
+
+        return groups

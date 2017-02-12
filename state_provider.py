@@ -47,6 +47,9 @@ class StateProvider():
     def get_group(self, group_id):
         return self.states[group_id]
 
+    def get_all_groups(self):
+        return self.states
+
     def toggle_unit(self, group_id, unit_id):
         unit = self.states[group_id]["units"][unit_id]
         unit["on"] = not unit["on"]
@@ -60,14 +63,10 @@ class StateProvider():
 
         self._save_states()
 
-    def toggle_all_units(self, mode=None):
+    def toggle_all_units(self, mode):
         for switch_group in self.states:
             for unit in switch_group["units"]:
-                if mode is not None:
-                    unit["on"] = mode
-                else:
-                    unit["on"] = not unit["on"]
-
+                unit["on"] = mode
                 unit["last_event"] = str(datetime.now())
 
         self._save_states()

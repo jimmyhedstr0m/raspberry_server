@@ -3,16 +3,16 @@
 	"server_port": 5000,
     "switch_groups": [
         {
-            "id": 0,
+            "group_id": 0,
             "name": "Grupp 1",
             "remote_code": "20617870",
             "units": [
                 {
-                    "id": 0,
+                    "unit_id": 0,
                     "name": "Fönster"
                 },
                 {
-                    "id": 1,
+                    "unit_id": 1,
                     "name": "Skrivbord"
                 }
             ]
@@ -20,7 +20,7 @@
     ],
     "ir_remotes": [
         {
-            "id": 0,
+            "remote_id": 0,
             "name": "LG",
             "config_file": "/etc/lirc/lg.conf",
             "keys": [
@@ -76,7 +76,7 @@
             ]
         },
         {
-            "id": 1,
+            "remote_id": 1,
             "name": "Bose",
             "config_file": "/etc/lirc/bose.conf",
             "keys": [
@@ -87,7 +87,7 @@
             ]
         },
         {
-            "id": 2,
+            "remote_id": 2,
             "name": "Apple TV",
             "config_file": "/etc/lirc/my_apple_tv.conf",
             "keys": [
