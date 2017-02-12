@@ -2,6 +2,7 @@ import json
 import os.path
 import io
 from config_parser import ConfigParser
+from datetime import datetime
 
 
 class StateProvider():
@@ -27,7 +28,7 @@ class StateProvider():
                     unit["last_event"] = ""
                     unit["last_user"] = ""
 
-            self.states = switch_groups;
+            self.states = switch_groups
             data_str = json.dumps(switch_groups, indent=2)
 
             try:
@@ -40,3 +41,26 @@ class StateProvider():
 
     def get_unit_state(self, group_id, unit_id):
         return self.states[group_id]["units"][unit_id]
+
+    def get_group_states(self, group_id):
+        return self.states[group_id]["units"]
+
+    def toggle_unit_state(self, group_id, unit_id):
+        unit = self.states[group_id]["units"][unit_id]
+        unit["on"] = not unit["on"]
+        unit["last_event"] = str(datetime.now())
+
+    def toggle_group_units(self, group_id, mode):
+        for unit in self.states[group_id]["units"]:
+            unit["on"] = mode
+            unit["last_event"] = str(datetime.now())
+
+    def toggle_all_units(self, mode=None):
+        for switch_group in self.states:
+            for unit in switch_group["units"]:
+                if mode is not None:
+                    unit["on"] = mode
+                else:
+                    unit["on"] = not unit["on"]
+
+                unit["last_event"] = str(datetime.now())

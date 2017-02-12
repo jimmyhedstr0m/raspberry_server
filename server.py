@@ -53,5 +53,5 @@ def remote():
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
     state_provider = StateProvider()
-    print json.dumps(state_provider.get_unit_state(0, 1), indent=2, sort_keys=True)
+    print json.dumps(state_provider.get_group_states(0), indent=2, sort_keys=True)
     app.run(host="0.0.0.0", port=server_port, debug=True)
