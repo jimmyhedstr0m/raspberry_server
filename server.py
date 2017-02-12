@@ -1,12 +1,14 @@
 from flask import Flask, make_response, request, abort
 from config_parser import ConfigParser
 from ir_remote import IrRemote
+from pilight_remote import PiLightRemote
 import crossdomain_fix
 import json
 
 app = Flask(__name__)
 config_parser = ConfigParser()
 ir_remote = IrRemote(0)
+pilight_remote = PiLightRemote(0)
 
 
 @app.route("/")
@@ -27,6 +29,7 @@ def toggle(group, unit):
     else:
         try:
             unit = int(unit)
+	    pilight_remote.execute_command(unit)
             return "Toggle group " + str(group) + " and unit " + str(unit)
         except ValueError:
             abort(400)
