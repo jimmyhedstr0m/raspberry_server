@@ -7,11 +7,11 @@ class IrRemote(Remote):
 
     def __init__(self, remote_id):
         Remote.__init__(self, remote_id)
-	self.conf_file = "/etc/lirc/toshiba_tv_remote.conf"
+        self.conf_file = "/etc/lirc/toshiba_tv_remote.conf"
 
     def execute_command(self, command_id):
         if self.validate_command(command_id):
-	    print command_id
+            print command_id
             self._execute(str(command_id))
         else:
             print "Unknown commands, remote received following signal", arg

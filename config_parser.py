@@ -20,13 +20,13 @@ class ConfigParser():
         return self.config_data["switch_groups"][switch_ix]["remote_code"]
 
     def get_remote_commands(self, remote_ix):
-        return self.config_data["remotes"][remote_ix]["keys"]
+        return self.config_data["ir_remotes"][remote_ix]["keys"]
 
     def get_remote_name(self, remote_ix):
-	    return self.config_data["remotes"][remote_ix]["name"]
+        return self.config_data["ir_remotes"][remote_ix]["name"]
 
     def get_remote_conf_file(self, remote_ix):
-	    return self.config_data["remotes"][remote_ix]["config_file"]
+        return self.config_data["ir_remotes"][remote_ix]["config_file"]
 
     def get_server_port(self):
-	    return int(self.config_data["server_port"])
+        return self.config_data["server_port"]

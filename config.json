@@ -1,5 +1,6 @@
 {
-	"server_port": "5000",
+    "secret_key": "",
+	"server_port": 5000,
     "switch_groups": [
         {
             "id": 0,
@@ -17,8 +18,9 @@
             ]
         }
     ],
-    "remotes": [
+    "ir_remotes": [
         {
+            "id": 0,
             "name": "LG",
             "config_file": "/etc/lirc/lg.conf",
             "keys": [
@@ -74,6 +76,7 @@
             ]
         },
         {
+            "id": 1,
             "name": "Bose",
             "config_file": "/etc/lirc/bose.conf",
             "keys": [
@@ -84,6 +87,7 @@
             ]
         },
         {
+            "id": 2,
             "name": "Apple TV",
             "config_file": "/etc/lirc/my_apple_tv.conf",
             "keys": [
