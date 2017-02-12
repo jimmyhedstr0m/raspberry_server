@@ -15,7 +15,7 @@ class PiLightRemote():
         self.state_provider.toggle_unit(group_id, unit_id)
         unit = self.state_provider.get_unit(group_id, unit_id)
 
-        if unit["on"]:
+        if unit["power_on"]:
             cmd += "t"
         else:
             cmd += "f"
