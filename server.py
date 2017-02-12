@@ -3,6 +3,7 @@ from config_parser import ConfigParser
 from ir_remote import IrRemote
 from pilight_remote import PiLightRemote
 from state_provider import StateProvider
+from re import findall
 import crossdomain_fix
 import json
 import subprocess
