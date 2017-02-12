@@ -56,4 +56,6 @@ Turn all off:
 pilight-send -p nexa_switch -i <uuid> -a -f
 
 # Flask
+sudo apt-get install python-pip
+sudo pip install flask
 Documentation: http://flask.pocoo.org/docs/0.12/
