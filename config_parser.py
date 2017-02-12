@@ -1,3 +1,4 @@
+import io
 import json
 
 
@@ -7,7 +8,7 @@ class ConfigParser():
         self.load_config_file()
 
     def load_config_file(self):
-        with open("config.json") as data_file:
+        with io.open("config.json", "r", encoding="utf8") as data_file:
             self.config_data = json.load(data_file)
 
     def reload_config_file(self):

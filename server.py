@@ -8,7 +8,7 @@ import json
 
 app = Flask(__name__)
 config_parser = ConfigParser()
-
+pilight_remote = PiLightRemote()
 
 @crossdomain_fix.crossdomain(origin='*')
 @app.route("/")
@@ -21,23 +21,16 @@ def status():
     return "Working fine..."
 
 
-@app.route("/switches/toggle/<int:group>/<unit>", methods=["POST"])
+@app.route("/switches/<int:group>/<int:mode>", methods=["POST", "OPTIONS"])
+def toggle_group_units(group, mode):
+    toggle = pilight_remote.toggle_group_units(group, bool(mode))
+    return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
+
+
+@app.route("/switches/toggle/<int:group>/<int:unit>", methods=["POST", "OPTIONS"])
 def toggle(group, unit):
-    if unit == "all":
-        # print json.dumps(config_parser.get_switch_groups(), indent=2, sort_keys=True)
-        switch_group = config_parser.get_switch_groups()[group]
-
-        # for units in switch_group["units"]:
-
-        return "Toggle all units in group " + str(group)
-    else:
-        try:
-            unit = int(unit)
-            pilight_remote = PiLightRemote(group)
-            pilight_remote.execute_command(unit)
-            return "Toggle group " + str(group) + " and unit " + str(unit)
-        except ValueError:
-            abort(400)
+    toggle = pilight_remote.toggle_unit(group, unit)
+    return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 @app.route("/remote", methods=["POST", "OPTIONS"])
@@ -50,8 +43,9 @@ def remote():
     ir_remote.execute_command(command)
     return(command)
 
+
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
-    state_provider = StateProvider()
-    print json.dumps(state_provider.get_group_states(0), indent=2, sort_keys=True)
+
+    # print json.dumps(state_provider.get_group_states(0), indent=2, sort_keys=True)
     app.run(host="0.0.0.0", port=server_port, debug=True)

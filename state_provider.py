@@ -17,6 +17,16 @@ class StateProvider():
         else:
             self.reset_states()
 
+    def _save_states(self):
+        try:
+            to_unicode = unicode
+        except NameError:
+            to_unicode = str
+
+        data_str = json.dumps(self.states, indent=2)
+        with io.open("states.json", "w", encoding="utf8") as destination_file:
+            destination_file.write(to_unicode(data_str))
+
     def reset_states(self):
         with io.open("config.json", "r", encoding="utf8") as data_file:
             data = json.load(data_file)
@@ -29,31 +39,26 @@ class StateProvider():
                     unit["last_user"] = ""
 
             self.states = switch_groups
-            data_str = json.dumps(switch_groups, indent=2)
+            self._save_states()
 
-            try:
-                to_unicode = unicode
-            except NameError:
-                to_unicode = str
-
-            with io.open("states.json", "w", encoding="utf8") as source_file:
-                source_file.write(to_unicode(data_str))
-
-    def get_unit_state(self, group_id, unit_id):
+    def get_unit(self, group_id, unit_id):
         return self.states[group_id]["units"][unit_id]
 
-    def get_group_states(self, group_id):
-        return self.states[group_id]["units"]
+    def get_group(self, group_id):
+        return self.states[group_id]
 
-    def toggle_unit_state(self, group_id, unit_id):
+    def toggle_unit(self, group_id, unit_id):
         unit = self.states[group_id]["units"][unit_id]
         unit["on"] = not unit["on"]
         unit["last_event"] = str(datetime.now())
+        self._save_states()
 
     def toggle_group_units(self, group_id, mode):
         for unit in self.states[group_id]["units"]:
             unit["on"] = mode
             unit["last_event"] = str(datetime.now())
+
+        self._save_states()
 
     def toggle_all_units(self, mode=None):
         for switch_group in self.states:
@@ -64,3 +69,5 @@ class StateProvider():
                     unit["on"] = not unit["on"]
 
                 unit["last_event"] = str(datetime.now())
+
+        self._save_states()

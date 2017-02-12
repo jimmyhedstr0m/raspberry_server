@@ -1,29 +1,41 @@
 import subprocess
-from config_parser import ConfigParser
+from state_provider import StateProvider
 
 
 class PiLightRemote():
 
-    def __init__(self, remote_ix):
-        config_parser = ConfigParser()
-        self.remote_id = config_parser.get_switch_id(remote_ix)
-        self.current_status = [0, 0, 0]
+    def __init__(self):
+        self.state_provider = StateProvider()
 
-    def execute_command(self, unit_id):
-        # if self.validate_command(unit_id):
-        self._execute_command(unit_id)
-        # else:
-        # print "Unknown commands, remote received following signal", arg
+    def toggle_unit(self, group_id, unit_id):
+        switch_group = self.state_provider.get_group(group_id)
+        remote_code = switch_group["remote_code"]
+        cmd = "pilight-send -p nexa_switch -i " + remote_code + " -u " + str(unit_id) + " -"
+        
+        self.state_provider.toggle_unit(group_id, unit_id)
+        unit = self.state_provider.get_unit(group_id, unit_id)
 
-    def _execute_command(self, unit_id):
-        print unit_id, self.current_status
-        if self.current_status[unit_id] == 0:
-            self.current_status[unit_id] = 1
-            cmd = "pilight-send -p nexa_switch -i " + \
-                str(self.remote_id) + " -u " + str(unit_id) + " -t"
-        elif self.current_status[unit_id] == 1:
-            self.current_status[unit_id] = 0
-            cmd = "pilight-send -p nexa_switch -i " + \
-                str(self.remote_id) + " -u " + str(unit_id) + " -f"
-        print cmd
-        subprocess.call(cmd, shell=True)
+        if unit["on"]:
+            cmd += "t"
+        else:
+            cmd += "f"
+
+        print "Execute: " + cmd
+        # subprocess.call(cmd, shell=True)
+        return unit
+
+    def toggle_group_units(self, group_id, mode):
+        switch_group = self.state_provider.get_group(group_id)
+        remote_code = switch_group["remote_code"]
+        cmd = "pilight-send -p nexa_switch -i " + remote_code + " -a -"
+        if mode:
+            cmd += "t"
+        else:
+            cmd += "f"
+
+        self.state_provider.toggle_group_units(group_id, mode)
+
+        print "Execute: " + cmd
+        # subprocess.call(cmd, shell=True)
+
+        return self.state_provider.get_group(group_id)
