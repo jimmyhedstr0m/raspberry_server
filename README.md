@@ -18,6 +18,7 @@ $ sudo pip install flask
 
 #### Pilight
 Install [pilight] to support the 433,92 MHz sender in order to control the power switches.
+
 | Installation steps | Link |
 | ------ | ------ |
 | Install library | [https://manual.pilight.org/en/installation] [pilight] |
