@@ -13,15 +13,11 @@ class StateProvider():
         self.load_states()
 
     def load_states(self):
-        self.mutex.acquire()
-        try:
-            if os.path.isfile("states.json"):
-                with io.open("states.json", "r", encoding="utf8") as data_file:
-                    self.states = json.load(data_file)
-            else:
-                self.reset_states()
-        finally:
-            self.mutex.release()
+        if os.path.isfile("states.json"):
+            with io.open("states.json", "r", encoding="utf8") as data_file:
+                self.states = json.load(data_file)
+        else:
+            self.reset_states()
 
     def _save_states(self):
         try:
