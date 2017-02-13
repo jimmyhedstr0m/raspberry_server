@@ -95,6 +95,10 @@ After installation lirc should be restarted with ```sudo /etc/init.d/lirc restar
 
 Sender cable should be connected to **GPIO22**, and receiver to **GPIO23**.
 
+### Configuration file
+config.json
+TODO
+
 License
 ----
 
