@@ -76,7 +76,7 @@ $ pilight-send -p nexa_switch -i <uuid> -a -t
 
 Turn off all units:
 ```sh
-$ pilight-send -p nexa_switch -i <uuid> -a -t
+$ pilight-send -p nexa_switch -i <uuid> -a -f
 ```
 
 The <uuid> is the remote id and most be decoded in advance with ```pilight-receive```
