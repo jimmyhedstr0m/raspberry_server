@@ -1,6 +1,6 @@
 {
     "secret_key": "",
-	"server_port": 5000,
+    "server_port": 5000,
     "switch_groups": [
         {
             "group_id": 0,
