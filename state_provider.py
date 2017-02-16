@@ -48,10 +48,19 @@ class StateProvider():
             self._save_states()
 
     def get_unit(self, group_id, unit_id):
-        return self.states[group_id]["units"][unit_id]
+        group = self.get_group(group_id)
+
+        if group and unit_id > -1 and unit_id < len(group["units"]):
+            return group["units"][unit_id]
+        else:
+            return None
+
 
     def get_group(self, group_id):
-        return self.states[group_id]
+        if group_id > -1 and group_id < len(self.states):
+            return self.states[group_id]
+        else:
+            return None
 
     def get_all_groups(self):
         return self.states

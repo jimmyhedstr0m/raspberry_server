@@ -60,25 +60,37 @@ def get_group(group_id):
         results = StateProvider().get_all_groups()
     else:
         try:
-            results = StateProvider().get_group(int(group_id))
+            group = StateProvider().get_group(int(group_id))
+            if group:
+                return succ_response(group)
+            else:
+                return err_response("Unable to find group " + str(group_id))
         except ValueError:
             abort(400)
-
-    return succ_response(results)
 
 
 # Get specific group unit
 @app.route("/switches/group/<int:group_id>/unit/<int:unit_id>")
 def get_unit(group_id, unit_id):
-    unit = StateProvider().get_unit(group_id, unit_id)
-    return succ_response(unit)
+    group = StateProvider().get_group(group_id)
+
+    if group:
+        unit = StateProvider().get_unit(group_id, unit_id)
+        if unit:
+            return succ_response(unit)
+        else:
+            err_string = "Unable to find unit " + str(unit_id)
+            err_string += " in group " + str(group_id)
+            return err_response(err_string)
+    else:
+        return err_response("Unable to find group " + str(group_id))
 
 
 @app.route("/remote/<int:remote_id>/key/<key>", methods=["POST", "OPTIONS"])
 def remote(remote_id, key):
     remote = ir_remote.get_remote(remote_id)
 
-    if remote != None:
+    if remote is not None:
         if str(key) in remote["keys"]:
             ir_remote.send_command(remote_id, key)
 
@@ -93,7 +105,7 @@ def remote(remote_id, key):
             err_string += ", " + remote["name"]
             return err_response(err_string)
     else:
-        return err_response("Unable to find remote with remote_id " + str(remote_id))
+        return err_response("Unable to find remote " + str(remote_id))
 
 
 @app.route("/temp")
@@ -115,6 +127,7 @@ def err_response(data):
         "error": data
     }
     return json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False)
+
 
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
