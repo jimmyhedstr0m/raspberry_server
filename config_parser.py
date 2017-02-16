@@ -23,12 +23,12 @@ class ConfigParser():
     def get_remote(self, remote_id):
         try:
             remote_id = int(remote_id)
-            if remote_id > 0 and remote_id < len(self.config_data["ir_remotes"]):
+            if remote_id > -1 and remote_id < len(self.config_data["ir_remotes"]):
                 return self.config_data["ir_remotes"][remote_id]
             else:
-                return False
+                return None
         except ValueError:
-            abort(400)
+            return None;
 
     def get_remote_commands(self, remote_ix):
         return self.config_data["ir_remotes"][remote_ix]["keys"]

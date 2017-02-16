@@ -6,18 +6,18 @@ class IrRemote():
 
     def __init__(self):
         self.config_parser = ConfigParser()
-        self._max_steps = 80
+        self._max_steps = 100
 
     def send_command(self, remote_id, key):
         remote = self.config_parser.get_remote(remote_id)
         key = str(key)
 
-        if remote and key in remote["keys"]:
+        if remote:
             cmd = "irsend SEND_ONCE " + remote["config_file"] + " " + key
             subprocess.call(cmd, shell=True)
-            return True
-        else:
-            return False
+
+    def get_remote(self, remote_id):
+        return self.config_parser.get_remote(remote_id)
 
     def set_volume(self, remote_id, percentage):
         remote = self.config_parser.get_remote(remote_id)
@@ -32,6 +32,7 @@ class IrRemote():
                     cmd += "KEY_VOLUMEUP"
 
                     for i in range(0, steps):
+                        print "Send!"
                         subprocess.call(cmd, shell=True)
                 else:
                     cmd += "KEY_VOLUMEDOWN"

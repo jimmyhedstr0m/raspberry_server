@@ -11,6 +11,9 @@ import subprocess
 app = Flask(__name__)
 config_parser = ConfigParser()
 pilight_remote = PiLightRemote()
+ir_remote = IrRemote()
+
+server_debug = True
 
 
 @crossdomain_fix.crossdomain(origin='*')
@@ -24,11 +27,16 @@ def status():
     return "Working fine..."
 
 
+@app.route("/reload")
+def reload():
+    return "Implement server reset/reload function"
+
+
 # Toggle specific group unit
 @app.route("/switches/toggle/group/<int:group_id>/unit/<int:unit_id>", methods=["POST", "OPTIONS"])
 def toggle(group_id, unit_id):
     toggle = pilight_remote.toggle_unit(group_id, unit_id)
-    return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
+    return succ_response(toggle)
 
 
 # Set units in specific group/all groups to either on/off (1/0)
@@ -42,7 +50,7 @@ def toggle_group_units(group_id, mode):
         except ValueError:
             abort(400)
 
-    return json.dumps({"results": toggle}, indent=2, sort_keys=True, ensure_ascii=False)
+    return succ_response(toggle)
 
 
 # Get specific group or all groups
@@ -56,25 +64,36 @@ def get_group(group_id):
         except ValueError:
             abort(400)
 
-    return json.dumps({"results": results}, indent=2, sort_keys=True, ensure_ascii=False)
+    return succ_response(results)
 
 
 # Get specific group unit
 @app.route("/switches/group/<int:group_id>/unit/<int:unit_id>")
 def get_unit(group_id, unit_id):
     unit = StateProvider().get_unit(group_id, unit_id)
-    return json.dumps({"results": unit}, indent=2, sort_keys=True, ensure_ascii=False)
+    return succ_response(unit)
 
 
-@app.route("/remote", methods=["POST", "OPTIONS"])
-def remote():
-    print json.dumps(request.json, indent=2, sort_keys=True)
-    remote_id = int(request.json["remote_id"])
-    command = request.json["command_id"]
+@app.route("/remote/<int:remote_id>/key/<key>", methods=["POST", "OPTIONS"])
+def remote(remote_id, key):
+    remote = ir_remote.get_remote(remote_id)
 
-    ir_remote = IrRemote(remote_id)
-    ir_remote.execute_command(command)
-    return(command)
+    if remote != None:
+        if str(key) in remote["keys"]:
+            ir_remote.send_command(remote_id, key)
+
+            results = {
+                "remote_id": remote_id,
+                "name": remote["name"],
+                "key": key
+            }
+            return succ_response(results)
+        else:
+            err_string = "Key " + str(key) + " does not belong to remote " + str(remote_id)
+            err_string += ", " + remote["name"]
+            return err_response(err_string)
+    else:
+        return err_response("Unable to find remote with remote_id " + str(remote_id))
 
 
 @app.route("/temp")
@@ -84,9 +103,24 @@ def temp():
     return json.dumps({"server_temperature": temp}, indent=2, sort_keys=True, ensure_ascii=False)
 
 
+def succ_response(data):
+    out = {
+        "results": data
+    }
+    return json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False)
+
+
+def err_response(data):
+    out = {
+        "error": data
+    }
+    return json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False)
+
 if __name__ == "__main__":
     server_port = config_parser.get_server_port()
-    #subprocess.call("sudo service pilight start", shell=True)
-    # subprocess.call("sudo service pilight restart", shell=True) # fix?
 
-    app.run(host="0.0.0.0", port=server_port, debug=True)
+    if not server_debug:
+        subprocess.call("sudo service pilight start", shell=True)
+        subprocess.call("sudo service pilight restart", shell=True) # fix?
+
+    app.run(host="0.0.0.0", port=server_port, debug=server_debug)
