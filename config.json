@@ -4,7 +4,7 @@
     "switch_groups": [
         {
             "group_id": 0,
-            "name": "Grupp 1",
+            "group_name": "Grupp 1",
             "remote_code": "20617870",
             "units": [
                 {
@@ -25,7 +25,7 @@
     "ir_remotes": [
         {
             "remote_id": 0,
-            "name": "LG",
+            "remote_name": "LG",
             "config_file": "/etc/lirc/lg.conf",
             "keys": [
                 "KEY_ALTERASE",

@@ -12,12 +12,6 @@ class StateProvider():
         self.mutex = Lock()
         self.load_states()
 
-    def load_states(self):
-        if os.path.isfile("states.json"):
-            with io.open("states.json", "r", encoding="utf8") as data_file:
-                self.states = json.load(data_file)
-        else:
-            self.reset_states()
 
     def _save_states(self):
         try:
@@ -33,6 +27,15 @@ class StateProvider():
         finally:
             self.mutex.release()
 
+
+    def load_states(self):
+        if os.path.isfile("states.json"):
+            with io.open("states.json", "r", encoding="utf8") as data_file:
+                self.states = json.load(data_file)
+        else:
+            self.reset_states()
+
+
     def reset_states(self):
         with io.open("config.json", "r", encoding="utf8") as data_file:
             data = json.load(data_file)
@@ -46,6 +49,7 @@ class StateProvider():
 
             self.states = switch_groups
             self._save_states()
+
 
     def get_unit(self, group_id, unit_id):
         group = self.get_group(group_id)
@@ -62,8 +66,10 @@ class StateProvider():
         else:
             return None
 
+
     def get_all_groups(self):
         return self.states
+
 
     def toggle_unit(self, group_id, unit_id):
         unit = self.states[group_id]["units"][unit_id]
@@ -71,12 +77,14 @@ class StateProvider():
         unit["last_event"] = str(datetime.now())
         self._save_states()
 
+
     def toggle_group_units(self, group_id, mode):
         for unit in self.states[group_id]["units"]:
             unit["power_on"] = mode
             unit["last_event"] = str(datetime.now())
 
         self._save_states()
+
 
     def toggle_all_units(self, mode):
         for switch_group in self.states:
