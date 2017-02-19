@@ -7,7 +7,6 @@ class IrRemote(Remote):
 
     def __init__(self):
         self.config_parser = ConfigParser()
-        self._max_steps = 100
 
 
     def get_remote(self, remote_id):
@@ -26,7 +25,8 @@ class IrRemote(Remote):
                 results = {
                     "remote_id": remote_id,
                     "name": remote["remote_name"],
-                    "key": key
+                    "key": key,
+                    "value": None
                 }
 
                 return Remote.succ_response(self, results)
@@ -39,25 +39,37 @@ class IrRemote(Remote):
 
 
     def set_volume(self, remote_id, percentage):
-        remote = self.config_parser.get_remote(remote_id)
+        remote = self.get_remote(remote_id)
 
         if remote:
-            try:
-                value = float(percentage) * 100.0
-                steps = value * self._max_steps
+            if remote["volume_interval"]:
+                steps = int(percentage * int(remote["volume_interval"]))
                 cmd = "irsend SEND_ONCE " + remote["config_file"] + " "
 
-                if value > 0:
-                    cmd += "KEY_VOLUMEUP"
+                if percentage > 0:
+                    key = "KEY_VOLUMEUP"
+                    cmd += key
 
                     for i in range(0, steps):
-                        print "Send!"
                         subprocess.call(cmd, shell=True)
                 else:
-                    cmd += "KEY_VOLUMEDOWN"
+                    key = "KEY_VOLUMEDOWN"
+                    cmd += key
 
                     for i in range(steps, 0, -1):
                         subprocess.call(cmd, shell=True)
 
-            except ValueError:
-                abort(400)
+                results = {
+                    "remote_id": remote_id,
+                    "name": remote["remote_name"],
+                    "key": key,
+                    "value": percentage
+                }
+
+                return Remote.succ_response(self, results)
+            else:
+                err_string = "Missing integer 'volume_interval' for remote "
+                err_string += str(remote_id) + " (" + remote["remote_name"] + ")"
+                return Remote.err_response(self, err_string)
+        else:
+            return Remote.err_response(self, "Unable to find remote " + str(remote_id))

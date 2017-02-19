@@ -74,6 +74,16 @@ def remote(remote_id, key):
     return IrRemote().send_command(remote_id, key)
 
 
+@app.route("/remote/<int:remote_id>/volume/<mode>/<float:percentage>", methods=["POST", "OPTIONS"])
+def set_volume(remote_id, mode, percentage):
+    if mode == "up":
+        return IrRemote().set_volume(remote_id, percentage)
+    elif mode == "down":
+        return IrRemote().set_volume(remote_id, -percentage)
+    else:
+        abort(400)
+
+
 @app.route("/temp")
 def temp():
     temp = subprocess.check_output(["vcgencmd", "measure_temp"]).decode("UTF-8")
