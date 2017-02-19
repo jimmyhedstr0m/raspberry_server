@@ -10,8 +10,6 @@ import subprocess
 
 app = Flask(__name__)
 config_parser = ConfigParser()
-pilight_remote = PiLightRemote()
-# ir_remote = IrRemote()
 
 # Change this to False on server
 server_debug = True
