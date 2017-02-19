@@ -69,11 +69,13 @@ def get_unit(group_id, unit_id):
     return PiLightRemote().get_unit(group_id, unit_id)
 
 
+# Send remote signal for specific remote with lirc specified key
 @app.route("/remote/<int:remote_id>/key/<key>", methods=["POST", "OPTIONS"])
 def remote(remote_id, key):
     return IrRemote().send_command(remote_id, key)
 
 
+# Send multiple remote signals according to a percentage value
 @app.route("/remote/<int:remote_id>/volume/<mode>/<float:percentage>", methods=["POST", "OPTIONS"])
 def set_volume(remote_id, mode, percentage):
     if mode == "up":
