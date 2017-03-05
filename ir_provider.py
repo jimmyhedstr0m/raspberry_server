@@ -1,9 +1,9 @@
 import subprocess
 from config_parser import ConfigParser
-from remote_interface import Remote
+from response_interface import Response
 
 
-class IrRemote(Remote):
+class IrProvider(Response):
 
     def __init__(self):
         self.config_parser = ConfigParser()
@@ -29,13 +29,13 @@ class IrRemote(Remote):
                     "value": None
                 }
 
-                return Remote.succ_response(self, results)
+                return Response.succ_response(self, results)
             else:
                 err_string = "Key " + str(key) + " does not belong to remote "
                 err_string += str(remote_id) + " (" + remote["remote_name"] + ")"
-                return Remote.err_response(self, err_string)
+                return Response.err_response(self, err_string)
         else:
-            return Remote.err_response(self, "Unable to find remote " + str(remote_id))
+            return Response.err_response(self, "Unable to find remote " + str(remote_id))
 
 
     def set_volume(self, remote_id, percentage):
@@ -66,10 +66,10 @@ class IrRemote(Remote):
                     "value": percentage
                 }
 
-                return Remote.succ_response(self, results)
+                return Response.succ_response(self, results)
             else:
                 err_string = "Missing integer 'volume_interval' for remote "
                 err_string += str(remote_id) + " (" + remote["remote_name"] + ")"
-                return Remote.err_response(self, err_string)
+                return Response.err_response(self, err_string)
         else:
-            return Remote.err_response(self, "Unable to find remote " + str(remote_id))
+            return Response.err_response(self, "Unable to find remote " + str(remote_id))

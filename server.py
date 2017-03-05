@@ -1,8 +1,7 @@
 from flask import Flask, make_response, request, abort
 from config_parser import ConfigParser
-from ir_remote import IrRemote
-from pilight_remote import PiLightRemote
-from state_provider import StateProvider
+from ir_provider import IrProvider
+from light_provider import LightProvider
 from re import findall
 import crossdomain_fix
 import json
@@ -10,6 +9,8 @@ import subprocess
 
 app = Flask(__name__)
 config_parser = ConfigParser()
+light_provider = LightProvider()
+ir_provider = IrProvider()
 
 # Change this to False on server
 server_debug = True
@@ -31,55 +32,49 @@ def reload():
     return "Implement server reset/reload function"
 
 
-# Toggle specific group unit
-@app.route("/switches/toggle/group/<int:group_id>/unit/<int:unit_id>", methods=["POST", "OPTIONS"])
-def toggle(group_id, unit_id):
-    return PiLightRemote().toggle_unit(group_id, unit_id)
+# Get all rooms
+@app.route("/rooms")
+def get_rooms():
+    return light_provider.get_all_rooms()
 
 
-# Set units in specific group/all groups to either on/off (1/0)
-@app.route("/switches/group/<group_id>/power/<int:mode>", methods=["POST", "OPTIONS"])
-def toggle_group_units(group_id, mode):
-    if group_id == "all":
-        return PiLightRemote().toggle_all_units(bool(mode))
-    else:
-        try:
-            return PiLightRemote().toggle_group_units(int(group_id), bool(mode))
-        except ValueError:
-            abort(400)
+# Get specific room
+@app.route("/room/<int:room_id>")
+def get_room(room_id):
+    return light_provider.get_room(room_id)
 
 
-# Get specific group or all groups
-@app.route("/switches/group/<group_id>")
-def get_group(group_id):
-    if group_id == "all":
-        return PiLightRemote().get_all_groups()
-    else:
-        try:
-            return PiLightRemote().get_group(int(group_id))
-        except ValueError:
-            abort(400)
+# Get specific unit in specific room
+@app.route("/room/<int:room_id>/unit/<string:unit_id>")
+def get_room_unit(room_id, unit_id):
+    return light_provider.get_room_unit(room_id, unit_id)
 
 
-# Get specific group unit
-@app.route("/switches/group/<int:group_id>/unit/<int:unit_id>")
-def get_unit(group_id, unit_id):
-    return PiLightRemote().get_unit(group_id, unit_id)
+# Toggle specific room
+@app.route("/toggle/room/<int:room_id>", methods=["POST", "OPTIONS"])
+def toggle_room(room_id):
+    return light_provider.toggle_room(room_id)
+
+
+# Toggle specific unit in specific room
+@app.route("/toggle/room/<int:room_id>/unit/<string:unit_id>", methods=["POST", "OPTIONS"])
+def toggle_room_unit(room_id, unit_id):
+    return light_provider.toggle_unit(room_id, unit_id)
 
 
 # Send remote signal for specific remote with lirc specified key
-@app.route("/remote/<int:remote_id>/key/<key>", methods=["POST", "OPTIONS"])
+@app.route("/remote/<int:remote_id>/key/<string:key>", methods=["POST", "OPTIONS"])
 def remote(remote_id, key):
-    return IrRemote().send_command(remote_id, key)
+    return ir_provider.send_command(remote_id, key)
 
 
 # Send multiple remote signals according to a percentage value
 @app.route("/remote/<int:remote_id>/volume/<mode>/<float:percentage>", methods=["POST", "OPTIONS"])
 def set_volume(remote_id, mode, percentage):
     if mode == "up":
-        return IrRemote().set_volume(remote_id, percentage)
+        return ir_provider.set_volume(remote_id, percentage)
     elif mode == "down":
-        return IrRemote().set_volume(remote_id, -percentage)
+        return ir_provider.set_volume(remote_id, -percentage)
     else:
         abort(400)
 
