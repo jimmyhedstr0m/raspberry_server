@@ -66,7 +66,7 @@
         {
             "remote_id": 0,
             "remote_name": "LG",
-            "config_file": "/etc/lirc/lg.conf",
+            "config_file": "lg.conf",
             "volume_interval": null,
             "keys": [
                 "KEY_ALTERASE",
@@ -123,7 +123,7 @@
         {
             "remote_id": 1,
             "remote_name": "Bose",
-            "config_file": "/etc/lirc/bose.conf",
+            "config_file": "bose.conf",
             "volume_interval": 80,
             "keys": [
                 "KEY_AUDIO",
@@ -135,7 +135,7 @@
         {
             "remote_id": 2,
             "remote_name": "Apple TV",
-            "config_file": "/etc/lirc/my_apple_tv.conf",
+            "config_file": "my_apple_tv.conf",
             "volume_interval": null,
             "keys": [
                 "KEY_UP",

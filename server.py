@@ -13,7 +13,7 @@ light_provider = LightProvider()
 ir_provider = IrProvider()
 
 # Change this to False on server
-server_debug = True
+server_debug = False
 
 
 @crossdomain_fix.crossdomain(origin='*')
