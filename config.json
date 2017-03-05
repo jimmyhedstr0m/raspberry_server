@@ -22,6 +22,74 @@
             ]
         }
     ],
+    "rooms": [
+        {
+            "room_id": 0,
+            "room_name": "Hall",
+            "units": {
+                "2061XXXX-0": {
+                  "unit_id": 0,
+                  "type": "nexa",
+                  "unit_name": "Fönster",
+                  "remote_code": "2061XXXX"
+                }
+            }
+        },
+        {
+            "room_id": 1,
+            "room_name": "Vardagsrum",
+            "units": {
+                "2061XXXX-1": {
+                  "unit_id": 1,
+                  "type": "nexa",
+                  "unit_name": "Fönster",
+                  "remote_code": "2061XXXX"
+                },
+                "d073d512a038": {
+                  "unit_id": "d073d512a038",
+                  "type": "lifx",
+                  "unit_name": "Golvlampa",
+                  "remote_code": null
+                }
+            }
+        },
+        {
+            "room_id": 2,
+            "room_name": "Sovrum",
+            "units": {
+                "20617870-0": {
+                  "unit_id": 0,
+                  "type": "nexa",
+                  "unit_name": "Fönster",
+                  "remote_code": "20617870"
+                },
+                "20617870-1": {
+                  "unit_id": 1,
+                  "type": "nexa",
+                  "unit_name": "Fläkt",
+                  "remote_code": "20617870"
+                },
+                "20617870-2": {
+                  "unit_id": 2,
+                  "type": "nexa",
+                  "unit_name": "Skrivbord",
+                  "remote_code": "20617870"
+                }
+            }
+        },
+        {
+            "room_id": 3,
+            "room_name": "Kök",
+            "units": {
+                "2061XXXX-2": {
+                  "unit_id": 2,
+                  "type": "nexa",
+                  "unit_name": "Fönster",
+                  "remote_code": "2061XXXX"
+                }
+            }
+        }
+    ],
     "ir_remotes": [
         {
             "remote_id": 0,
