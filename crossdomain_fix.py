@@ -1,5 +1,5 @@
-from flask import current_app, request, make_response
 from datetime import timedelta
+from flask import make_response, request, current_app
 from functools import update_wrapper
 
 
@@ -32,12 +32,10 @@ def crossdomain(origin=None, methods=None, headers=None,
                 return resp
 
             h = resp.headers
+
             h['Access-Control-Allow-Origin'] = origin
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
-            h['Access-Control-Allow-Credentials'] = 'true'
-            h['Access-Control-Allow-Headers'] = \
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization"
             if headers is not None:
                 h['Access-Control-Allow-Headers'] = headers
             return resp

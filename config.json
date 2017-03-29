@@ -8,7 +8,7 @@
             "units": {
                 "2061XXXX-0": {
                   "unit_id": "2061XXXX-0",
-                  "type": "nexa",
+                  "type": "nexa-eycr2",
                   "unit_name": "Fönster"
                 }
             }
@@ -17,10 +17,15 @@
             "room_id": 1,
             "room_name": "Vardagsrum",
             "units": {
-                "2061XXXX-1": {
-                  "unit_id": "2061XXXX-1",
-                  "type": "nexa",
+                "20617870-1": {
+                  "unit_id": "20617870-1",
+                  "type": "nexa-pe3",
                   "unit_name": "Fönster"
+                },
+                "20617870-2": {
+                  "unit_id": "20617870-2",
+                  "type": "nexa-pe3",
+                  "unit_name": "Skrivbord"
                 },
                 "d073d512a038": {
                   "unit_id": "d073d512a038",
@@ -35,18 +40,8 @@
             "units": {
                 "20617870-0": {
                   "unit_id": "20617870-0",
-                  "type": "nexa",
+                  "type": "nexa-pe3",
                   "unit_name": "Fönster"
-                },
-                "20617870-1": {
-                  "unit_id": "20617870-1",
-                  "type": "nexa",
-                  "unit_name": "Fläkt"
-                },
-                "20617870-2": {
-                  "unit_id": "20617870-2",
-                  "type": "nexa",
-                  "unit_name": "Skrivbord"
                 }
             }
         },
@@ -55,8 +50,8 @@
             "room_name": "Kök",
             "units": {
                 "2061XXXX-2": {
-                  "unit_id": "2061XXXX-2",
-                  "type": "nexa",
+                  "unit_id": "2061XXXX-1",
+                  "type": "nexa-eycr2",
                   "unit_name": "Fönster"
                 }
             }
