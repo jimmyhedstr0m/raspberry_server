@@ -1,15 +1,13 @@
-import sys
-import smbus
 from response_interface import Response
 
 
 class Temperature(Response):
 
-    def __init__(self):
-        pass
-
     def get_temperature(self, address=0x48):
         try:
+            import sys
+            import smbus
+
             bus = smbus.SMBus(1)
             raw = bus.read_word_data(address, 0) & 0xFFFF
             raw = ((raw << 8) & 0xFF00) + (raw >> 8)
@@ -22,5 +20,7 @@ class Temperature(Response):
             }
 
             return Response.succ_response(self, results)
-        except:
-            return Response.err_response(self, "Unexpected error:", sys.exc_info()[0])
+        except ImportError:
+            err_string = "Python libraries needed for temperature"
+            err_string += " measurement not installed"
+            return Response.err_response(self, err_string)

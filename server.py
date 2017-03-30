@@ -91,7 +91,7 @@ def set_volume(remote_id, mode, percentage):
 
 @app.route("/temperature")
 @crossdomain(origin='*')
-def temperature():
+def temp():
     return jsonify(temperature.get_temperature())
 
 
