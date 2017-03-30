@@ -2,21 +2,22 @@ from flask import Flask, make_response, request, abort, jsonify
 from config_parser import ConfigParser
 from ir_provider import IrProvider
 from light_provider import LightProvider
+from temperature import Temperature
 from re import findall
 from crossdomain_fix import crossdomain
 import json
 import subprocess
-import sys
-import smbus
+# import sys
+# import smbus
 
 app = Flask(__name__)
 config_parser = ConfigParser()
 light_provider = LightProvider()
 ir_provider = IrProvider()
+temperature = Temperature()
 
 # Change this to False on server
 server_debug = False
-
 
 @crossdomain(origin='*')
 @app.route("/")
@@ -91,20 +92,7 @@ def set_volume(remote_id, mode, percentage):
 @app.route("/temperature")
 @crossdomain(origin='*')
 def temperature():
-    address = 0x48  # addr 0, 0, 0
-
-    bus = smbus.SMBus(1)
-    raw = bus.read_word_data(address, 0) & 0xFFFF
-    raw = ((raw << 8) & 0xFF00) + (raw >> 8)
-    temperature = (raw / 32.0) / 8.0
-    temperature = "{0:0.2f}".format(temperature)
-
-    res = {
-        "room_temperature": temperature,
-        "unit": "celsius"
-    }
-
-    return jsonify(res)
+    return jsonify(temperature.get_temperature())
 
 
 if __name__ == "__main__":
