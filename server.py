@@ -7,8 +7,7 @@ from re import findall
 from crossdomain_fix import crossdomain
 import json
 import subprocess
-# import sys
-# import smbus
+
 
 app = Flask(__name__)
 config_parser = ConfigParser()
@@ -18,21 +17,6 @@ temperature = Temperature()
 
 # Change this to False on server
 server_debug = False
-
-@crossdomain(origin='*')
-@app.route("/")
-def hello():
-    return "Hello world!"
-
-
-@app.route("/status")
-def status():
-    return "Working fine..."
-
-
-@app.route("/reload")
-def reload():
-    return "Implement server reset/reload function"
 
 
 # Get all rooms
