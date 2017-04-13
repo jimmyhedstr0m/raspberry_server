@@ -4,6 +4,7 @@ This project is a simple and modular python server for controlling power switche
 The system currently supports the following devices:
   - Any IR-device
   - Nexa PE3-1500 power switches
+  - LM75A temperature sensor
 
 ### Dependencies
 The server uses several libraries to work. 
@@ -94,6 +95,9 @@ The <uuid> is the remote id and most be decoded in advance with ```pilight-recei
 After installation lirc should be restarted with ```sudo /etc/init.d/lirc restart```. Add a 22 Ohm resistor before the leds in the wiring scheme to prevent them from burning.
 
 Sender cable should be connected to **GPIO22**, and receiver to **GPIO23**.
+
+#### Temperature sensor
+The API has support for responding with the room temperature. Buy a LM75A temperature sensor and set its addresses by soldering. Follow this tutorial: [http://www.instructables.com/id/Measuring-Temperature-With-I2C-Sensor-LM75A-on-Ras/]
 
 ### Configuration file
 config.json
